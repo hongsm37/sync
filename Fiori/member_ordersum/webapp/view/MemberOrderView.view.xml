@@ -1,0 +1,89 @@
+<mvc:View controllerName="cl3.syncyoung.sd.morderchart.memberordersum.controller.MemberOrderView"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data">
+    <Page id="page" title="{i18n>title}">
+
+           <SplitContainer id = "AirSplit"
+                           initialDetail="detail"
+                           initialMaster="master">
+
+            <masterPages>
+                <Page id="master" title="회원 주문 차트" backgroundDesign="List">
+                    <List>
+                        <StandardListItem icon="sap-icon://receipt" title="주문금액" press="onAmount" type="Navigation"/>
+                        <StandardListItem icon="sap-icon://receipt" title="주문횟수" press="onCount"  type="Navigation"/>
+                    </List>
+                </Page>
+            </masterPages>
+            
+            <detailPages>
+                <Page id="detail1" backgroundDesign= "Solid">
+                    <viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}" height='100%' width="100%" vizType='line'
+                                  vizProperties="{ title: {text : '회원별 총 주문금액', visible : true}}">
+                        
+                        <viz:dataset>
+                            <viz.data:FlattenedDataset data="{/MemberOrderSet}">
+
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="회원번호" value="{cust_num}" />  
+                                    </viz.data:dimensions>
+
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="총 주문금액" value="{netwr}"/>
+                                    </viz.data:measures>
+
+                            </viz.data:FlattenedDataset>
+                        </viz:dataset>
+
+                        <viz:feeds>
+                                <viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure" values="총 주문금액" />
+                                <viz.feeds:FeedItem id='categoryAxisFeed' uid="categoryAxis" type="Dimension" values="회원번호" />
+                        </viz:feeds>
+
+                        <viz:dependents>
+                            <viz:Popover id="idPopOver"></viz:Popover>
+                        </viz:dependents>
+
+                    </viz:VizFrame>
+                </Page>
+            </detailPages>
+
+            <!-- 회원별 주문 횟수  -->
+             <detailPages>
+                 <Page id="detail2" title="대금청구문서" backgroundDesign= "Solid">
+                    <viz:VizFrame id="idVizFrame2" uiConfig="{applicationSet:'fiori'}" height='100%' width="100%" vizType='bar'
+                                vizProperties="{ title: {text : '회원별 주문횟수', visible : true}}">
+                        
+                        <viz:dataset>
+                            <viz.data:FlattenedDataset data="{order>/MOrderCountSet}">
+
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="회원번호" value="{order>cust_num}" />  
+                                    </viz.data:dimensions>
+
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="주문횟수" value="{order>order_count}"/>
+                                    </viz.data:measures>
+
+                            </viz.data:FlattenedDataset>
+                        </viz:dataset>
+
+                        <viz:feeds>
+                                <viz.feeds:FeedItem id='valueAxisFeed2' uid="valueAxis" type="Measure" values="주문횟수" />
+                                <viz.feeds:FeedItem id='categoryAxisFeed2' uid="categoryAxis" type="Dimension" values="회원번호" />
+                        </viz:feeds>
+
+                        <viz:dependents>
+                            <viz:Popover id="idPopOver2"></viz:Popover>
+                        </viz:dependents>
+
+                    </viz:VizFrame>
+                </Page>
+             </detailPages>
+
+        </SplitContainer>
+    </Page>
+</mvc:View>
