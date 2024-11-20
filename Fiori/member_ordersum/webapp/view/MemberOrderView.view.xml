@@ -11,6 +11,7 @@
                            initialMaster="master">
 
             <masterPages>
+            <Text text="hihi"/>
                 <Page id="master" title="회원 주문 차트" backgroundDesign="List">
                     <List>
                         <StandardListItem icon="sap-icon://receipt" title="주문금액" press="onAmount" type="Navigation"/>
